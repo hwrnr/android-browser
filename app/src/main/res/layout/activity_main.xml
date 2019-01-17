@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/relativeContainer">
+
+
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/bar"
+            android:layout_above="@id/downBar">
+
+
+                <im.delight.android.webview.AdvancedWebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <!-- urlBar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:gravity="top"
+            android:id="@+id/bar"
+            android:weightSum="10">
+
+
+            <ImageView
+                android:src="@mipmap/ic_launcher"
+                android:id="@+id/favicon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="TODO" />
+            <EditText
+                android:id="@+id/urlBar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:inputType="textUri"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:hint="url"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="urlSet"/>
+
+        </LinearLayout>
+
+        <!-- bottom bar -->
+        <HorizontalScrollView
+            android:id="@+id/downBar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:isScrollContainer="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="dummyButton" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="dummyButton" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/button_phone"
+                    android:onClick="desktopModeToggle" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/button_add_to_home_screen"
+                    android:onClick="addShortcut" />
+
+                <Button
+                    android:id="@+id/locationButton"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/button_location_off"
+                    android:onClick="locationAccessChange" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="dummyButton" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="dummyButton" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_margin="10dp"
+        android:id="@+id/myFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="#F0F0F0"
+        app:elevation="8dp"
+        app:layout_anchor="@id/relativeContainer"
+        android:src="@drawable/passmanagericon"
+        app:layout_anchorGravity="bottom|right|end" />
+
+</android.support.design.widget.CoordinatorLayout>
