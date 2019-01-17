@@ -92,10 +92,12 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
 
                 if (keypadHeight > screenHeight * 0.15) {
                     //Keyboard is opened
-                    hideNavigationBar();
+                    //hideNavigationBar();
+                    showNavigationBar();
                 }
                 else {
                     // keyboard is closed
+                    hideNavigationBar();
                 }
             }
         });
@@ -243,6 +245,11 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
+    }
+
+    private void showNavigationBar(){
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(0);
     }
 
     //@SuppressLint("NewApi")
