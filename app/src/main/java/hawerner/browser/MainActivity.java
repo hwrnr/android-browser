@@ -236,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
 
     private void hideNavigationBar(){
         //enable fullscreen mode
-
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                   View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -297,7 +296,11 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
             mySwipeRefreshLayout.setRefreshing(false);
             urlBar.setText(mWebView.getUrl());
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            }catch (Exception e){
+                //TODO: obavesti korisnika da treba da instalira app ili da upali play store ili da ponudi da upali play store
+            }
             return;
         }
         mySwipeRefreshLayout.setRefreshing(true);
