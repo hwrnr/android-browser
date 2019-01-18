@@ -71,6 +71,13 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
     //WebView variables
     protected Boolean locationEnabled = false;
     protected Boolean desktopModeEnabled = false;
+    protected Boolean fullscreenEnabled = false;
+    protected int Fullscreen = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+    protected int fullscreen = Fullscreen;
 
 
 
@@ -237,12 +244,7 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
     private void hideNavigationBar(){
         //enable fullscreen mode
         View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                  View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        decorView.setSystemUiVisibility(this.fullscreen);
 
     }
 
@@ -511,5 +513,23 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
         ((Button) view).setCompoundDrawablesWithIntrinsicBounds(null, null, null, icon);
         mWebView.setDesktopMode(desktopModeEnabled);
         mWebView.reload();
+    }
+
+    public void fullscreenEnter(View view) {
+        Drawable icon;
+        if (!fullscreenEnabled){
+            icon = ContextCompat.getDrawable(this, R.drawable.fullscreen_exit);
+            this.fullscreen = 0;
+        }
+        else{
+            icon = ContextCompat.getDrawable(this, R.drawable.fullscreen_enter);
+            this.fullscreen = this.Fullscreen;
+        }
+
+        this.hideNavigationBar();
+
+        fullscreenEnabled = !fullscreenEnabled;
+        ((Button) view).setCompoundDrawablesWithIntrinsicBounds(null, null, null, icon);
+
     }
 }
