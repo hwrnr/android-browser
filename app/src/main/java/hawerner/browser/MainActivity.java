@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -33,6 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebIconDatabase;
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
     private FloatingActionButton passmanagerButton;
 
     public static int screenXResolution;
+    public static int screenYResolution;
 
     private boolean loadPasswordManager = true;
 
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
         setContentView(R.layout.activity_main);
         DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
         screenXResolution = metrics.widthPixels;
+        screenYResolution = metrics.heightPixels;
         checkPermission();
         String loadingUrl = "https://google.com/";
         if (getIntent().getExtras() != null)
@@ -167,7 +173,14 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
                 Log.i("Swipe", String.valueOf(params.height));
                 return super.onSwipeLeft();
             }
+
+            @Override
+            public boolean onSwipeBottom() {
+                mWebView.reload();
+                return super.onSwipeBottom();
+            }
         });
+        
         mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -182,6 +195,14 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
                 }
         );
 
+        mySwipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+            @Override
+            public boolean canChildScrollUp(@NonNull SwipeRefreshLayout swipeRefreshLayout, @Nullable View view) {
+                //Log.i("SwipeToRefresh", String.valueOf(mWebView.getScrollY()));
+                return true;
+            }
+        });
+
         passmanagerButton = (FloatingActionButton) this.findViewById(R.id.myFAB);
         passmanagerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -195,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    loadUrl(urlBar.getText().toString());
+                    MainActivity.this.urlSet(null);
                     //Toast.makeText(MainActivity.this, mWebView.getUrl(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -361,6 +382,22 @@ public class MainActivity extends AppCompatActivity implements AdvancedWebView.L
 
 
     public void urlSet(View view) {
+        LinearLayout bar = findViewById(R.id.bar);
+        HorizontalScrollView downBar = findViewById(R.id.downBar);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bar.getLayoutParams();
+        RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) downBar.getLayoutParams();
+        if (params.height != 0){
+            params.height = 0;
+            params1.height = params.height;
+            bar.setLayoutParams(params);
+            downBar.setLayoutParams(params1);
+        }
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(urlBar.getApplicationWindowToken(), 0);
+        } catch (Exception ignored) {
+        }
 
         String input = urlBar.getText().toString();
         loadUrl(input);

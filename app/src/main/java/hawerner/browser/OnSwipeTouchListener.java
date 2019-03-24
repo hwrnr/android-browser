@@ -41,7 +41,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                     }
                 } else {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffY > 0) {
+                        if (diffY > 0 && e1.getY() < KOEFICIJENT * MainActivity.screenYResolution) {
                             result = onSwipeBottom();
                         } else {
                             result = onSwipeTop();
