@@ -25,7 +25,8 @@ public class LoadUrl extends Activity {
         newIntet.putExtra("url", url);
         newIntet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         startActivity(newIntet);
+        overridePendingTransition(0, 0);
         finish();
-
+        overridePendingTransition(0, 0);
     }
 }
